@@ -1,21 +1,42 @@
-name: plixo
-description: "A new Flutter project."
+name: plixo_app
+description: "Plixo - A Pixel Art Social World"
 publish_to: 'none'
-
 version: 1.0.0+1
 
 environment:
-  sdk: ^3.9.2
+  sdk: ^3.5.0
 
 dependencies:
   flutter:
     sdk: flutter
+  # UI & Icons
   cupertino_icons: ^1.0.8
+  google_fonts: ^6.2.1
+
+
+  # Backend & Database
+  supabase_flutter: ^2.8.0
+
+  # Game Engine & 2D
+  flame: ^1.35.1
+  flame_audio: ^2.10.2 # للصوتيات مستقبلاً
+  intl: any
+
+  # State Management
+  provider: ^6.1.2
+
+  # Utilities
+  uuid: ^4.5.1
 
 dev_dependencies:
   flutter_test:
     sdk: flutter
-  flutter_lints: ^5.0.0
+  flutter_lints: ^4.0.0
 
 flutter:
   uses-material-design: true
+
+  # إضافة مجلد الأصول
+  assets:
+    - assets/images/
+    - assets/audio/ # سننشئه لاحقاً
