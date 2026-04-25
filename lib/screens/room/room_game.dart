@@ -208,7 +208,14 @@ class RoomGame extends FlameGame with DragCallbacks {
     add(FurnitureItem(id: id, furnitureType: type, gridX: gx, gridY: gy));
   }
 
-  /// إضافة قطعة أثاث جديدة من المتجر
+  /// إضافة قطعة أثاث جديدة من المتجر في مكان محدد
+  void addFurnitureAt(String type, int gx, int gy) {
+    final def = RoomConfig.furnitureDefs[type];
+    if (def == null) return;
+    _addItem(id: _uid(), type: type, gx: gx, gy: gy);
+  }
+
+  /// إضافة قطعة أثاث جديدة من المتجر (تبحث عن مكان فاضي)
   void addFurniture(String type) {
     final def = RoomConfig.furnitureDefs[type];
     if (def == null) return;
@@ -223,6 +230,7 @@ class RoomGame extends FlameGame with DragCallbacks {
   }
 
   // ── كشف التصادم ──────────────────────────────────────────
+  /// دالة عامة للكشف عن إمكانية وضع قطعة أثاث في مكان معين
   bool canPlace({
     required String excludeId,
     required int    gridX,
