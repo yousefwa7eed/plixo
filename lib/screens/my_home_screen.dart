@@ -417,18 +417,14 @@ class _MyHomeScreenState extends State<MyHomeScreen>
                 ),
               ),
               const Divider(color: _border, height: 1),
-              // قائمة الأثاث - قابلة للتمرير بشكل صحيح
+              // قائمة الأثاث
               Expanded(
-                child: ClipRect(
-                  child: ListView.builder(
-                    scrollDirection: Axis.horizontal,
-                    padding        : const EdgeInsets.symmetric(horizontal: 12, vertical: 12),
-                    itemCount      : RoomConfig.furnitureDefs.length,
-                    itemBuilder: (ctx, index) {
-                      final entry = RoomConfig.furnitureDefs.entries.elementAt(index);
-                      return _shopItem(type: entry.key, def: entry.value);
-                    },
-                  ),
+                child: ListView(
+                  scrollDirection: Axis.horizontal,
+                  padding        : const EdgeInsets.symmetric(horizontal: 12, vertical: 12),
+                  children       : RoomConfig.furnitureDefs.entries.map((e) {
+                    return _shopItem(type: e.key, def: e.value);
+                  }).toList(),
                 ),
               ),
             ],
