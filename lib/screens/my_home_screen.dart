@@ -137,25 +137,55 @@ class _MyHomeScreenState extends State<MyHomeScreen>
 
   // ── شراء أثاث ─────────────────────────────────────────────
   void _buyFurniture(String type, int price) {
+    if (_game == null) return;
     if (_coins < price) {
       _showSnack('مش عندك كوينز كافية 😅', Colors.orangeAccent);
       return;
     }
-    _game?.addFurniture(type);
+    
+    // تحقق من إمكانية الإضافة (في مكان فاضي)
+    final def = RoomConfig.furnitureDefs[type];
+    if (def == null) return;
+    
+    // ابحث عن أول مكان فاضي
+    bool placed = false;
+    for (int gx = 0; gx <= RoomConfig.gridCols - def.gridW && !placed; gx++) {
+      for (int gy = RoomConfig.wallRows; gy <= RoomConfig.gridRows - def.gridH && !placed; gy++) {
+        if (_game!.canPlace(excludeId: '', gridX: gx, gridY: gy, gridW: def.gridW, gridH: def.gridH)) {
+          _game!.addFurnitureAt(type, gx, gy);
+          placed = true;
+        }
+      }
+    }
+    
+    if (!placed) {
+      _showSnack('مافيش مكان كافي في الغرفة 😕', Colors.redAccent);
+      return;
+    }
+    
     setState(() => _coins -= price);
     _showSnack('تمت الإضافة إلى غرفتك 🎉', _purple);
   }
 
   // ── Toggle Edit Mode ──────────────────────────────────────
-  void _toggleEdit() => setState(() {
-    _editMode  = !_editMode;
-    _shopOpen  = false;
-    if (_editMode) _shopAnim.reverse(); else _shopAnim.reverse();
-  });
+  void _toggleEdit() {
+    setState(() {
+      _editMode  = !_editMode;
+      if (!_editMode) {
+        _shopOpen = false;
+        _shopAnim.reverse();
+      }
+    });
+  }
 
   void _toggleShop() {
+    if (!_editMode) return;
     setState(() => _shopOpen = !_shopOpen);
-    _shopOpen ? _shopAnim.forward() : _shopAnim.reverse();
+    if (_shopOpen) {
+      _shopAnim.forward();
+    } else {
+      _shopAnim.reverse();
+    }
   }
 
   // ══════════════════════════════════════════════════════════

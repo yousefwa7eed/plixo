@@ -99,6 +99,9 @@ class FurnitureItem extends PositionComponent
       gridW     : _def.gridW,
       gridH     : _def.gridH,
     );
+    
+    // تحديث الـ priority أثناء السحب عشان القطعة تطلع فوق
+    priority = 1000 + _snapGridY;
   }
 
   @override
